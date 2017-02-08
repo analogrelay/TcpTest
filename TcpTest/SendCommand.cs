@@ -57,9 +57,9 @@ namespace TcpTest
             var payload = Encoding.UTF8.GetBytes(message + Environment.NewLine);
             using (var socket = new Socket(SocketType.Stream, ProtocolType.Tcp))
             {
-                Console.WriteLine($"Connecting to {host}:{port}");
+                Console.Error.WriteLine($"Connecting to {host}:{port}");
                 await socket.ConnectAsync(host, port);
-                Console.WriteLine($"Connection to {host}:{port} established!");
+                Console.Error.WriteLine($"Connection to {host}:{port} established!");
 
                 try
                 {
@@ -75,7 +75,7 @@ namespace TcpTest
                 }
                 catch (OperationCanceledException)
                 {
-                    Console.WriteLine("Cancellation requested.");
+                    Console.Error.WriteLine("Cancellation requested.");
                 }
             }
 

@@ -41,9 +41,9 @@ namespace TcpTest
             {
                 socket.Bind(new IPEndPoint(IPAddress.Any, port));
                 socket.Listen(10);
-                Console.WriteLine($"Socket is listening on port {port}");
+                Console.Error.WriteLine($"Socket is listening on port {port}");
                 var client = await socket.AcceptAsync();
-                Console.WriteLine($"Received a connection from: {client.RemoteEndPoint}");
+                Console.Error.WriteLine($"Received a connection from: {client.RemoteEndPoint}");
 
                 try
                 {

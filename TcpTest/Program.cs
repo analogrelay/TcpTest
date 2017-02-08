@@ -29,6 +29,7 @@ namespace TcpTest
 
             SendCommand.Register(app);
             ListenCommand.Register(app);
+            NetCatCommand.Register(app);
 
             app.Command("help", cmd =>
             {

@@ -11,14 +11,19 @@ namespace TcpTest
             return 1;
         }
 
-        public static CancellationToken CreateCtrlCToken()
+        public static void RegisterCtrlCTrigger(CancellationTokenSource cts)
         {
-            var cts = new CancellationTokenSource();
             Console.CancelKeyPress += (sender, args) =>
             {
                 args.Cancel = true;
                 cts.Cancel();
             };
+        }
+
+        public static CancellationToken CreateCtrlCToken()
+        {
+            var cts = new CancellationTokenSource();
+            RegisterCtrlCTrigger(cts);
             return cts.Token;
         }
     }
