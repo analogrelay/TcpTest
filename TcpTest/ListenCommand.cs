@@ -40,18 +40,20 @@ namespace TcpTest
             using (var socket = new Socket(SocketType.Stream, ProtocolType.Tcp))
             {
                 socket.Bind(new IPEndPoint(IPAddress.Any, port));
+                socket.Listen(10);
+                Console.WriteLine($"Socket is listening on port {port}");
                 var client = await socket.AcceptAsync();
+                Console.WriteLine($"Received a connection from: {client.RemoteEndPoint}");
 
                 try
                 {
                     var cancellationToken = CommandHelper.CreateCtrlCToken();
-                    using (cancellationToken.Register(() => socket.Dispose()))
+                    using (cancellationToken.Register(() => client.Dispose()))
                     {
                         // Send until terminated
                         while (!cancellationToken.IsCancellationRequested)
                         {
-                            var args = new SocketAsyncEventArgs();
-                            var length = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), SocketFlags.None);
+                            var length = await client.ReceiveAsync(new ArraySegment<byte>(buffer), SocketFlags.None);
 
                             Console.Write(Encoding.UTF8.GetString(buffer, 0, length));
                         }

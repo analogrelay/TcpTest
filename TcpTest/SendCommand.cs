@@ -3,11 +3,14 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System;
 using System.Text;
+using System.Net;
 
 namespace TcpTest
 {
     public class SendCommand
     {
+        public static readonly string DefaultMessage = "Ping\r\n";
+
         public static void Register(CommandLineApplication app)
         {
             app.Command("send", cmd =>
@@ -50,10 +53,13 @@ namespace TcpTest
 
         private static async Task<int> ExecuteAsync(string message, string host, int port, TimeSpan interval)
         {
+            message = message ?? DefaultMessage;
             var payload = Encoding.UTF8.GetBytes(message + Environment.NewLine);
             using (var socket = new Socket(SocketType.Stream, ProtocolType.Tcp))
             {
+                Console.WriteLine($"Connecting to {host}:{port}");
                 await socket.ConnectAsync(host, port);
+                Console.WriteLine($"Connection to {host}:{port} established!");
 
                 try
                 {
